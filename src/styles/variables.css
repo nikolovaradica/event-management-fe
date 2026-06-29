@@ -1,0 +1,119 @@
+:root {
+    /* ==========================================
+       COLORS
+    ========================================== */
+
+    --color-primary: #0F766E;
+    --color-primary-hover: #115E59;
+    --color-primary-dark: #134E4A;
+
+    --color-accent: #06B6D4;
+    --color-accent-hover: #0891B2;
+
+    --color-background: #F8FAFC;
+    --color-surface: #FFFFFF;
+    --color-surface-alt: #F1F5F9;
+
+    --color-text-primary: #0F172A;
+    --color-text-secondary: #64748B;
+
+    --color-border: #E2E8F0;
+
+    --color-success: #22C55E;
+    --color-danger: #EF4444;
+    --color-warning: #F59E0B;
+
+
+
+    /* ==========================================
+       TYPOGRAPHY
+    ========================================== */
+
+    --font-family: "Inter", sans-serif;
+
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-md: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.5rem;
+    --font-size-2xl: 1.875rem;
+    --font-size-3xl: 2.25rem;
+    --font-size-4xl: 3rem;
+
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+
+
+    /* ==========================================
+       SPACING
+    ========================================== */
+
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-7: 3rem;
+    --space-8: 4rem;
+    --space-9: 6rem;
+
+    --input-height: 3rem;
+
+
+
+    /* ==========================================
+       BORDER RADIUS
+    ========================================== */
+
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1.25rem;
+    --radius-full: 9999px;
+
+
+
+    /* ==========================================
+       SHADOWS
+    ========================================== */
+
+    --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+
+    --shadow-md: 0 6px 24px rgba(15, 23, 42, 0.08);
+
+    --shadow-lg: 0 12px 40px rgba(15, 23, 42, 0.12);
+
+
+
+    /* ==========================================
+       TRANSITIONS
+    ========================================== */
+
+    --transition-fast: 150ms ease;
+
+    --transition-normal: 250ms ease;
+
+    --transition-slow: 350ms ease;
+
+
+
+    /* ==========================================
+       LAYOUT
+    ========================================== */
+
+    --container-max-width: 80rem;
+
+
+    /* ==========================================
+       Z-INDEX
+    ========================================== */
+
+    --z-navbar: 1000;
+    --z-dropdown: 1010;
+    --z-modal: 1020;
+    --z-tooltip: 1030;
+
+}
