@@ -5,7 +5,7 @@ const FavoriteButton = () => {
     return (
         <button className="btn btn-outline">
             <FontAwesomeIcon icon={faHeart} />
-            Save Event
+            Add to Favorites
         </button>
     );
 };
