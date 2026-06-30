@@ -1,18 +1,9 @@
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCalendarDays, faLocationDot} from "@fortawesome/free-solid-svg-icons";
+import type {AppEvent} from "../../types/AppEvent.ts";
 
-type EventCardProps = {
-    id: number;
-    title: string;
-    imageUrl: string;
-    category: string;
-    organizer: string;
-    city: string;
-    eventDate: string;
-};
-
-const EventCard = ({id, title, imageUrl, category, organizer, city, eventDate}: EventCardProps) => {
+const EventCard = ({id, title, imageUrl, category, organizer, city, eventDate}: AppEvent) => {
     return (
         <Link
             to={`/events/${id}`}
