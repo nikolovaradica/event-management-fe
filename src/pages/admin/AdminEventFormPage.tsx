@@ -1,5 +1,17 @@
-function AdminEventFormPage() {
-    return <h1>Admin Event Form Page</h1>;
-}
+import AdminEventForm from "../../components/admin/AdminEventForm.tsx";
 
-export default AdminEventFormPage;
+const EventFormPage = () => {
+    return (
+        <main className="admin-page">
+            <div className="app-container">
+                <section className="page-header">
+                    <h1>Add Event</h1>
+                    <p>Create a new professional event.</p>
+                </section>
+                <AdminEventForm />
+            </div>
+        </main>
+    );
+};
+
+export default EventFormPage;
