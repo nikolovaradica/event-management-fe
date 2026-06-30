@@ -31,7 +31,9 @@
         grid-template-columns: repeat(2, 1fr);
     }
 
-
+    .profile-information {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Phones */
