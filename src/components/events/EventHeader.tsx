@@ -1,0 +1,51 @@
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faBuilding, faCalendarDays, faLocationDot} from "@fortawesome/free-solid-svg-icons";
+import FavoriteButton from "./FavoriteButton.tsx";
+import type {AppEvent} from "../../types/AppEvent.ts";
+
+type EventHeaderProps = {
+    event: AppEvent;
+};
+
+const EventHeader = ({ event }: EventHeaderProps) => {
+    return (
+        <section className="event-header">
+            <div className="event-header-image">
+                <img
+                    src={event.imageUrl}
+                    alt={event.title}
+                />
+            </div>
+            <div className="event-header-content">
+                <span className="event-category">
+                    {event.category}
+                </span>
+                <h1>
+                    {event.title}
+                </h1>
+                <p className="event-organizer">
+                    Hosted by <strong>{event.organizer}</strong>
+                </p>
+                <div className="event-divider" />
+                <div className="event-information">
+                    <div className="event-information-item">
+                        <FontAwesomeIcon icon={faCalendarDays}/>
+                        <span>{event.eventDate}</span>
+                    </div>
+                    <div className="event-information-item">
+                        <FontAwesomeIcon icon={faLocationDot}/>
+                        <span>{event.city}</span>
+                    </div>
+                    <div className="event-information-item">
+                        <FontAwesomeIcon icon={faBuilding}/>
+                        <span>{event.venue}</span>
+                    </div>
+                </div>
+                <div className="event-divider" />
+                <FavoriteButton />
+            </div>
+        </section>
+    );
+};
+
+export default EventHeader;

@@ -15,6 +15,10 @@
     .embla__container > * {
         flex: 0 0 50%;
     }
+
+    .event-header {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Tablets */
