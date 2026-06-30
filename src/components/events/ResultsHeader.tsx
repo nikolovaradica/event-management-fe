@@ -1,13 +1,14 @@
 type ResultsHeaderProps = {
-    totalEvents: number;
+    title: string;
+    subtitle?: string;
 };
 
-const ResultsHeader = ({totalEvents}: ResultsHeaderProps) => {
+const ResultsHeader = ({title, subtitle}: ResultsHeaderProps) => {
     return (
         <section className="results-header">
             <div>
-                <h2>{totalEvents} Events Found</h2>
-                <p>Showing upcoming events.</p>
+                <h2>{title}</h2>
+                <p>{subtitle}</p>
             </div>
         </section>
     );

@@ -1220,3 +1220,62 @@
 .form .btn {
     width: 100%;
 }
+
+/* ==========================================
+   FAVORITES PAGE
+========================================== */
+
+.favorites-page {
+    padding-block: var(--space-8);
+}
+
+/* ==========================================
+   NO FAVORITES
+========================================== */
+
+.no-favorites {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-block: var(--space-9);
+}
+
+.no-favorites-icon {
+    margin-bottom: var(--space-5);
+    font-size: 3rem;
+    color: var(--color-primary);
+}
+
+.no-favorites h2 {
+    margin-bottom: var(--space-3);
+}
+
+.no-favorites p {
+    max-width: 32rem;
+    margin-bottom: var(--space-6);
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+}
+
+/* ==========================================
+   PAGE HEADER
+========================================== */
+
+.page-header {
+    margin-bottom: var(--space-8);
+}
+
+.page-header h1 {
+    margin-bottom: var(--space-2);
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.1;
+}
+
+.page-header p {
+    max-width: 40rem;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-lg);
+    line-height: 1.6;
+}

@@ -77,9 +77,17 @@ function EventsPage() {
                     <FilterPanel />
                     <ActiveFilters />
                 </section>
-                <ResultsHeader totalEvents={24} />
-                <EventsGrid events={events} />
-                <Pagination currentPage={1} totalPages={10} />
+                <ResultsHeader
+                    title="24 Events Found"
+                    subtitle="Showing upcoming events."
+                />
+                <EventsGrid
+                    events={events}
+                />
+                <Pagination
+                    currentPage={1}
+                    totalPages={10}
+                />
             </div>
         </main>
     )
