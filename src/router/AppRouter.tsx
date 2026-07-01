@@ -16,6 +16,8 @@ import MainLayout from "../components/layout/MainLayout.tsx";
 import AdminDashboardPage from "../pages/admin/AdminDashboardPage.tsx";
 import AdminOrganizerFormPage from "../pages/admin/AdminOrganizerFormPage.tsx";
 import AdminCategoryFormPage from "../pages/admin/AdminCategoryFormPage.tsx";
+import ProtectedRoute from "./ProtectedRoute.tsx";
+import AdminRoute from "./AdminRoute.tsx";
 
 function AppRouter() {
     return (
@@ -31,17 +33,17 @@ function AppRouter() {
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
 
-                    <Route path="/favorites" element={<FavoritesPage />} />
-                    <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="/favorites" element={<ProtectedRoute><FavoritesPage /></ProtectedRoute>} />
+                    <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
 
-                    <Route path="/admin" element={<AdminDashboardPage />} />
-                    <Route path="/admin/events" element={<AdminEventsPage />} />
-                    <Route path="/admin/events/new" element={<AdminEventFormPage />} />
-                    <Route path="/admin/events/edit/:id" element={<AdminEventFormPage />} />
-                    <Route path="/admin/categories" element={<AdminCategoriesPage />} />
-                    <Route path="/admin/categories/new" element={<AdminCategoryFormPage />} />
-                    <Route path="/admin/organizers" element={<AdminOrganizersPage />} />
-                    <Route path="/admin/organizers/new" element={<AdminOrganizerFormPage />} />
+                    <Route path="/admin" element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
+                    <Route path="/admin/events" element={<AdminRoute><AdminEventsPage /></AdminRoute>} />
+                    <Route path="/admin/events/new" element={<AdminRoute><AdminEventFormPage /></AdminRoute>} />
+                    <Route path="/admin/events/edit/:id" element={<AdminRoute><AdminEventFormPage /></AdminRoute>} />
+                    <Route path="/admin/categories" element={<AdminRoute><AdminCategoriesPage /></AdminRoute>} />
+                    <Route path="/admin/categories/new" element={<AdminRoute><AdminCategoryFormPage /></AdminRoute>} />
+                    <Route path="/admin/organizers" element={<AdminRoute><AdminOrganizersPage /></AdminRoute>} />
+                    <Route path="/admin/organizers/new" element={<AdminRoute><AdminOrganizerFormPage /></AdminRoute>} />
                 </Route>
 
                 <Route path="*" element={<NotFoundPage />} />
