@@ -3,27 +3,13 @@ import type {AppEvent} from "../../types/AppEvent.ts";
 import EventDescription from "../../components/events/EventDescription.tsx";
 import ReviewsSection from "../../components/reviews/ReviewsSection.tsx";
 import type {Review} from "../../types/Review.ts";
+import {useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {getEventById} from "../../api/eventService.ts";
 
 const EventDetailsPage = () => {
-    const event: AppEvent = {
-        id: 1,
-        title: "AI Conference 2026",
-        description:
-            "Join researchers, engineers and technology leaders for two days of talks, workshops and networking focused on the latest developments in Artificial Intelligence.",
-
-        imageUrl:
-            "https://images.unsplash.com/photo-1540575467063-178a50c2df87",
-
-        category: "Artificial Intelligence",
-
-        organizer: "Faculty of Computer Science and Engineering (FINKI)",
-
-        city: "Skopje, North Macedonia",
-
-        venue: "FINKI Campus",
-
-        eventDate: "12 September 2026"
-    };
+    const { id } = useParams();
+    const [event, setEvent] = useState<AppEvent | null>(null);
 
     const reviews: Review[] = [
         {
@@ -55,6 +41,33 @@ const EventDetailsPage = () => {
             reviewDate: "13 September 2026"
         }
     ];
+
+    const loadEvent = async () => {
+        if (!id) {
+            return;
+        }
+
+        try {
+            const response = await getEventById(Number(id));
+            setEvent(response);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        loadEvent();
+    }, [id]);
+
+    if (!event) {
+        return (
+            <main className="event-details-page">
+                <div className="app-container">
+                    Loading...
+                </div>
+            </main>
+        );
+    }
 
     return (
         <main className="event-details-page">

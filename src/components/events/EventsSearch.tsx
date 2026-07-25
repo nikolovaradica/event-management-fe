@@ -2,7 +2,12 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
 import Input from "../common/Input.tsx";
 
-const EventsSearch = () => {
+type EventsSearchProps = {
+    value: string;
+    onSearchChange: (value: string) => void;
+};
+
+const EventsSearch = ({ value, onSearchChange }: EventsSearchProps) => {
     return (
         <section className="events-search">
             <h1>Explore Events</h1>
@@ -15,6 +20,8 @@ const EventsSearch = () => {
                 <Input
                     type="text"
                     placeholder="Search events..."
+                    value={value}
+                    onChange={(e) => onSearchChange(e.target.value)}
                 />
             </div>
         </section>

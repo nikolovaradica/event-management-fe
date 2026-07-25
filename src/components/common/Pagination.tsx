@@ -4,9 +4,10 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 type PaginationProps = {
     currentPage: number;
     totalPages: number;
+    onPageChange: (page: number) => void;
 };
 
-const Pagination = ({currentPage, totalPages}: PaginationProps) => {
+const Pagination = ({currentPage, totalPages, onPageChange}: PaginationProps) => {
     const maxVisiblePages = 5;
     let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
     let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
@@ -22,6 +23,7 @@ const Pagination = ({currentPage, totalPages}: PaginationProps) => {
             <button
                 className="pagination-button"
                 disabled={currentPage === 1}
+                onClick={() => onPageChange(currentPage - 1)}
             >
                 <FontAwesomeIcon icon={faChevronLeft} />
             </button>
@@ -33,6 +35,7 @@ const Pagination = ({currentPage, totalPages}: PaginationProps) => {
                             ? "pagination-button active"
                             : "pagination-button"
                     }
+                    onClick={() => onPageChange(page)}
                 >
                     {page}
                 </button>
@@ -40,6 +43,7 @@ const Pagination = ({currentPage, totalPages}: PaginationProps) => {
             <button
                 className="pagination-button"
                 disabled={currentPage === totalPages}
+                onClick={() => onPageChange(currentPage + 1)}
             >
                 <FontAwesomeIcon icon={faChevronRight} />
             </button>

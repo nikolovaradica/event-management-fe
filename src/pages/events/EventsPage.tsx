@@ -4,89 +4,76 @@ import ActiveFilters from "../../components/events/ActiveFilters.tsx";
 import ResultsHeader from "../../components/events/ResultsHeader.tsx";
 import EventsGrid from "../../components/events/EventsGrid.tsx";
 import Pagination from "../../components/common/Pagination.tsx";
+import {useEffect, useState} from "react";
+import type {AppEvent} from "../../types/AppEvent.ts";
+import {getEvents} from "../../api/eventService.ts";
 
 function EventsPage() {
-    const events = [
-        {
-            id: 1,
-            title: "AI Conference 2026",
-            category: "Artificial Intelligence",
-            organizer: "FINKI",
-            city: "Skopje",
-            eventDate: "12 Sep 2026",
-            imageUrl:
-                "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200"
-        },
-        {
-            id: 2,
-            title: "Cloud Summit",
-            category: "Cloud",
-            organizer: "Microsoft",
-            city: "Belgrade",
-            eventDate: "20 Sep 2026",
-            imageUrl:
-                "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200"
-        },
-        {
-            id: 3,
-            title: "Cyber Security Days",
-            category: "Cybersecurity",
-            organizer: "OWASP",
-            city: "Sofia",
-            eventDate: "5 Oct 2026",
-            imageUrl:
-                "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200"
-        },
-        {
-            id: 4,
-            title: "Cyber Security Days",
-            category: "Cybersecurity",
-            organizer: "OWASP",
-            city: "Sofia",
-            eventDate: "5 Oct 2026",
-            imageUrl:
-                "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200"
-        },
-        {
-            id: 5,
-            title: "Cyber Security Days",
-            category: "Cybersecurity",
-            organizer: "OWASP",
-            city: "Sofia",
-            eventDate: "5 Oct 2026",
-            imageUrl:
-                "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200"
-        },
-        {
-            id: 6,
-            title: "Cyber Security Days",
-            category: "Cybersecurity",
-            organizer: "OWASP",
-            city: "Sofia",
-            eventDate: "5 Oct 2026",
-            imageUrl:
-                "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200"
+    const [events, setEvents] = useState<AppEvent[]>([]);
+    const [search, setSearch] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState("");
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const [totalEvents, setTotalEvents] = useState(0);
+
+    const loadEvents = async () => {
+        try {
+            const response = await getEvents({
+                page: currentPage,
+                search: debouncedSearch,
+            });
+
+            setEvents(response.content);
+            setTotalPages(response.totalPages);
+            setTotalEvents(response.totalElements);
+        } catch (error) {
+            console.error(error);
         }
-    ];
+    };
+
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page - 1);
+    };
+
+    const handleSearchChange = (value: string) => {
+        setSearch(value);
+        setCurrentPage(0);
+    };
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setDebouncedSearch(search);
+        }, 600);
+
+        return () => clearTimeout(timeout);
+    }, [search]);
+
+    useEffect(() => {
+        loadEvents();
+    }, [currentPage, debouncedSearch]);
 
     return (
         <main className="events-page">
             <div className="app-container">
                 <section className="filter-container">
-                    <EventsSearch />
+                    <EventsSearch
+                        value={search}
+                        onSearchChange={handleSearchChange}
+                    />
                     <FilterPanel />
                     <ActiveFilters />
                 </section>
                 <ResultsHeader
-                    title="24 Events Found"
+                    title={`${totalEvents} Events Found`}
                     subtitle="Showing upcoming events."
                 />
                 <EventsGrid
                     events={events}
                 />
                 <Pagination
-                    currentPage={1}
-                    totalPages={10}
+                    currentPage={currentPage + 1}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
                 />
             </div>
         </main>
