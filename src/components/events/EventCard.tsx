@@ -2,7 +2,7 @@ import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCalendarDays, faLocationDot} from "@fortawesome/free-solid-svg-icons";
 import type {AppEvent} from "../../types/AppEvent.ts";
-import {formatEventDate} from "../../utils/dateUtils.ts";
+import {formatDateTime} from "../../utils/dateUtils.ts";
 
 const EventCard = ({id, title, imageUrl, category, organizer, city, eventDate}: AppEvent) => {
     return (
@@ -26,7 +26,7 @@ const EventCard = ({id, title, imageUrl, category, organizer, city, eventDate}: 
                 <div className="event-meta">
                     <span>
                         <FontAwesomeIcon icon={faCalendarDays} />
-                        {formatEventDate(eventDate)}
+                        {formatDateTime(eventDate)}
                     </span>
                     <span>
                         <FontAwesomeIcon icon={faLocationDot} />

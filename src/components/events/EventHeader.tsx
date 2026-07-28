@@ -2,7 +2,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBuilding, faCalendarDays, faLocationDot} from "@fortawesome/free-solid-svg-icons";
 import FavoriteButton from "./FavoriteButton.tsx";
 import type {AppEvent} from "../../types/AppEvent.ts";
-import {formatEventDate} from "../../utils/dateUtils.ts";
+import {formatDateTime} from "../../utils/dateUtils.ts";
 
 type EventHeaderProps = {
     event: AppEvent;
@@ -31,7 +31,7 @@ const EventHeader = ({ event }: EventHeaderProps) => {
                 <div className="event-information">
                     <div className="event-information-item">
                         <FontAwesomeIcon icon={faCalendarDays}/>
-                        <span>{formatEventDate(event.eventDate, true)}</span>
+                        <span>{formatDateTime(event.eventDate, true)}</span>
                     </div>
                     <div className="event-information-item">
                         <FontAwesomeIcon icon={faLocationDot}/>

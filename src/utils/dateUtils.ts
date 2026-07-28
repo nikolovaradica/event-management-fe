@@ -1,4 +1,4 @@
-export const formatEventDate = (date: string, includeTime = false) => {
+export const formatDateTime = (date: string, includeTime = false) => {
     const eventDate = new Date(date);
 
     const formattedDate = eventDate.toLocaleDateString("en-GB", {

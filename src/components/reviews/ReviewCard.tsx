@@ -1,14 +1,15 @@
 import type {Review} from "../../types/Review.ts";
 import StarRating from "./StarRating.tsx";
+import {formatDateTime} from "../../utils/dateUtils.ts";
 
-const ReviewCard = ({author, rating, comment, reviewDate}: Review) => {
+const ReviewCard = ({rating, comment, createdAt, username}: Review) => {
     return (
         <article className="review-card">
             <div className="review-card-header">
                 <div>
-                    <h3>{author}</h3>
+                    <h3>{username}</h3>
                     <span className="review-date">
-                        {reviewDate}
+                        {formatDateTime(createdAt)}
                     </span>
                 </div>
                 <StarRating rating={rating} readOnly />
