@@ -6,4 +6,6 @@ export type Favorite = {
     city: string;
     venue: string;
     imageUrl: string;
+    categoryName: string;
+    organizerName: string;
 };

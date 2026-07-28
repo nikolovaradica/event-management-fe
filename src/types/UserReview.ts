@@ -4,5 +4,5 @@ export type UserReview = {
     eventTitle: string;
     rating: number;
     comment: string;
-    reviewDate: string;
+    createdAt: string;
 };

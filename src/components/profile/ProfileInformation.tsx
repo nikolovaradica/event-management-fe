@@ -1,4 +1,10 @@
-const ProfileInformation = () => {
+import type {Profile} from "../../types/Profile.ts";
+
+type ProfileInformationProps = {
+    profile: Profile;
+};
+
+const ProfileInformation = ({ profile }: ProfileInformationProps) => {
     return (
         <section className="profile-card">
             <div className="profile-card-header">
@@ -7,24 +13,21 @@ const ProfileInformation = () => {
             <div className="profile-information">
                 <div className="profile-information-item">
                     <label>First Name</label>
-                    <p>John</p>
+                    <p>{profile.firstName}</p>
                 </div>
                 <div className="profile-information-item">
                     <label>Last Name</label>
-                    <p>Smith</p>
+                    <p>{profile.lastName}</p>
                 </div>
                 <div className="profile-information-item">
                     <label>Username</label>
-                    <p>johnsmith</p>
+                    <p>{profile.username}</p>
                 </div>
                 <div className="profile-information-item">
                     <label>Email</label>
-                    <p>johnsmith@email.com</p>
+                    <p>{profile.email}</p>
                 </div>
             </div>
-            <button className="btn btn-outline">
-                Edit Profile
-            </button>
         </section>
     );
 };

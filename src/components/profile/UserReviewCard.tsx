@@ -1,15 +1,9 @@
 import StarRating from "../reviews/StarRating.tsx";
 import {Link} from "react-router-dom";
+import {formatDateTime} from "../../utils/dateUtils.ts";
+import type {UserReview} from "../../types/UserReview.ts";
 
-type UserReviewCardProps = {
-    eventId: number;
-    eventTitle: string;
-    rating: number;
-    comment: string;
-    reviewDate: string;
-};
-
-const UserReviewCard = ({eventId, eventTitle, rating, comment, reviewDate}: UserReviewCardProps) => {
+const UserReviewCard = ({eventId, eventTitle, rating, comment, createdAt}: UserReview) => {
     return (
         <article className="user-review-card">
             <div className="user-review-header">
@@ -21,7 +15,7 @@ const UserReviewCard = ({eventId, eventTitle, rating, comment, reviewDate}: User
                         {eventTitle}
                     </Link>
                     <span className="review-date">
-                        {reviewDate}
+                        {formatDateTime(createdAt)}
                     </span>
                 </div>
                 <StarRating
