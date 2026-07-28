@@ -6,9 +6,12 @@ import {formatDateTime} from "../../utils/dateUtils.ts";
 
 type EventHeaderProps = {
     event: AppEvent;
+    favorite: boolean;
+    onFavoriteToggle: () => void;
+    showFavoriteButton: boolean;
 };
 
-const EventHeader = ({ event }: EventHeaderProps) => {
+const EventHeader = ({ event, favorite, onFavoriteToggle, showFavoriteButton }: EventHeaderProps) => {
     return (
         <section className="event-header">
             <div className="event-header-image">
@@ -43,7 +46,12 @@ const EventHeader = ({ event }: EventHeaderProps) => {
                     </div>
                 </div>
                 <div className="event-divider" />
-                <FavoriteButton />
+                {showFavoriteButton && (
+                    <FavoriteButton
+                        favorite={favorite}
+                        onToggle={onFavoriteToggle}
+                    />
+                )}
             </div>
         </section>
     );

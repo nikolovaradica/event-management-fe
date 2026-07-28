@@ -8,11 +8,16 @@ import {useEffect, useState} from "react";
 import {getEventById} from "../../api/eventService.ts";
 import {createReview, getReviews} from "../../api/reviewService.ts";
 import type {ReviewRequest} from "../../types/ReviewRequest.ts";
+import {addFavorite, isFavorite, removeFavorite} from "../../api/favoriteService.ts";
+import {useAuth} from "../../context/AuthContext.tsx";
 
 const EventDetailsPage = () => {
     const { id } = useParams();
     const [event, setEvent] = useState<AppEvent | null>(null);
     const [reviews, setReviews] = useState<Review[]>([]);
+    const [favorite, setFavorite] = useState(false);
+
+    const { isAuthenticated } = useAuth();
 
     const loadEvent = async () => {
         if (!id) {
@@ -40,6 +45,19 @@ const EventDetailsPage = () => {
         }
     };
 
+    const loadFavorite = async () => {
+        if (!id) {
+            return;
+        }
+
+        try {
+            const response = await isFavorite(Number(id));
+            setFavorite(response);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     const handleReviewSubmit = async (review: ReviewRequest) => {
         if (!id) {
             return;
@@ -53,9 +71,30 @@ const EventDetailsPage = () => {
         }
     };
 
+    const handleFavoriteToggle = async () => {
+        if (!id) {
+            return;
+        }
+
+        try {
+            if (favorite) {
+                await removeFavorite(Number(id));
+                setFavorite(false);
+            } else {
+                await addFavorite(Number(id));
+                setFavorite(true);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     useEffect(() => {
         loadEvent();
         loadReviews();
+        if (isAuthenticated) {
+            loadFavorite();
+        }
     }, [id]);
 
     if (!event) {
@@ -71,7 +110,12 @@ const EventDetailsPage = () => {
     return (
         <main className="event-details-page">
             <div className="app-container">
-                <EventHeader event={event}/>
+                <EventHeader
+                    event={event}
+                    favorite={favorite}
+                    onFavoriteToggle={handleFavoriteToggle}
+                    showFavoriteButton={isAuthenticated}
+                />
                 <EventDescription description={event.description} />
                 <ReviewsSection
                     reviews={reviews}

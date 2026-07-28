@@ -1,11 +1,22 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faHeart} from "@fortawesome/free-solid-svg-icons";
+import {faHeart as faHeartSolid} from "@fortawesome/free-solid-svg-icons";
+import {faHeart as faHeartRegular} from "@fortawesome/free-regular-svg-icons";
 
-const FavoriteButton = () => {
+type FavoriteButtonProps = {
+    favorite: boolean;
+    onToggle: () => void;
+};
+
+const FavoriteButton = ({ favorite, onToggle }: FavoriteButtonProps) => {
     return (
-        <button className="btn btn-outline">
-            <FontAwesomeIcon icon={faHeart} />
-            Add to Favorites
+        <button
+            className="btn btn-outline"
+            onClick={onToggle}
+        >
+            <FontAwesomeIcon
+                icon={favorite ? faHeartSolid : faHeartRegular}
+            />
+            {favorite ? "Remove from Favorites" : "Add to Favorites"}
         </button>
     );
 };
