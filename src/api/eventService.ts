@@ -14,3 +14,8 @@ export const getEventById = async (id: number): Promise<AppEvent> => {
     const response = await api.get<AppEvent>(`/events/${id}`);
     return response.data;
 };
+
+export const getCities = async (): Promise<string[]> => {
+    const response = await api.get<string[]>("/events/cities");
+    return response.data;
+};
