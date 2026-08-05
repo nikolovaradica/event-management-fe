@@ -30,6 +30,7 @@
 
 .navbar-brand svg {
     font-size: 1.4rem;
+    color: var(--color-primary);
 }
 
 .navbar-navigation,
@@ -65,6 +66,71 @@
 
 .navbar-logo-text span {
     font-weight: var(--font-weight-bold);
+}
+
+.navbar-link-button {
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: color var(--transition-normal);
+}
+
+.navbar-link-button:hover {
+    color: var(--color-primary);
+}
+
+.navbar-dropdown {
+    position: relative;
+}
+
+.navbar-dropdown-trigger {
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: color var(--transition-normal);
+}
+
+.navbar-dropdown-trigger:hover {
+    color: var(--color-primary);
+}
+
+.navbar-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 14rem;
+    display: none;
+    flex-direction: column;
+    padding: 0.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-md);
+    z-index: 100;
+}
+
+.navbar-dropdown:hover .navbar-dropdown-menu {
+    display: flex;
+}
+
+.navbar-dropdown-menu a {
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--color-text-primary);
+}
+
+.navbar-dropdown-menu a:hover {
+    background: rgba(15,118,110,.08);
+    color: var(--color-primary);
 }
 
 /* ==========================================
