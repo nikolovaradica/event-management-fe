@@ -39,7 +39,7 @@ function AppRouter() {
                     <Route path="/admin" element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
                     <Route path="/admin/events" element={<AdminRoute><AdminEventsPage /></AdminRoute>} />
                     <Route path="/admin/events/new" element={<AdminRoute><AdminEventFormPage /></AdminRoute>} />
-                    <Route path="/admin/events/edit/:id" element={<AdminRoute><AdminEventFormPage /></AdminRoute>} />
+                    <Route path="/admin/events/:id/edit" element={<AdminRoute><AdminEventFormPage /></AdminRoute>} />
                     <Route path="/admin/categories" element={<AdminRoute><AdminCategoriesPage /></AdminRoute>} />
                     <Route path="/admin/categories/new" element={<AdminRoute><AdminCategoryFormPage /></AdminRoute>} />
                     <Route path="/admin/categories/:id/edit" element={<AdminRoute><AdminCategoryFormPage /></AdminRoute>} />

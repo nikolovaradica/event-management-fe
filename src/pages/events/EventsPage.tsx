@@ -91,8 +91,8 @@ function EventsPage() {
 
     const loadCategories = async () => {
         try {
-            const response = await getCategories();
-            setCategories(response);
+            const response = await getCategories({ page: 0, size: 100 });
+            setCategories(response.content);
         } catch (error) {
             console.error(error);
         }

@@ -4,9 +4,10 @@ import type {PageResponse} from "../types/PageResponse.ts";
 import api from "./api.ts";
 import type {OrganizerRequest} from "../types/OrganizerRequest.ts";
 
-export const getOrganizers = async (params?: AdminSearchPaginationFilters): Promise<PageResponse<Organizer>> => {
+export const getOrganizers = async (filters?: AdminSearchPaginationFilters): Promise<PageResponse<Organizer>> => {
     const response = await api.get(
-        "/organizers", { params }
+        "/organizers",
+        { params: filters }
     );
     return response.data;
 };
@@ -17,12 +18,18 @@ export const getOrganizerById = async (id: number): Promise<Organizer> => {
 };
 
 export const createOrganizer = async (request: OrganizerRequest): Promise<Organizer> => {
-    const response = await api.post("/organizers", request);
+    const response = await api.post(
+        "/organizers",
+        request
+    );
     return response.data;
 };
 
 export const updateOrganizer = async (id: number, request: OrganizerRequest): Promise<Organizer> => {
-    const response = await api.put(`/organizers/${id}`, request);
+    const response = await api.put(
+        `/organizers/${id}`,
+        request
+    );
     return response.data;
 };
 
