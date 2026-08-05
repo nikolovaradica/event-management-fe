@@ -1,12 +1,12 @@
 import type {Category} from "../types/Category.ts";
 import api from "./api.ts";
-import type {CategoryFilters} from "../types/CategoryFilters.ts";
+import type {AdminSearchPaginationFilters} from "../types/AdminSearchPaginationFilters.ts";
 import type {PageResponse} from "../types/PageResponse.ts";
 import type { CategoryRequest } from "../types/CategoryRequest.ts";
 
-export const getCategories = async (filters?: CategoryFilters): Promise<PageResponse<Category>> => {
+export const getCategories = async (params?: AdminSearchPaginationFilters): Promise<PageResponse<Category>> => {
     const response = await api.get<PageResponse<Category>>(
-        "/categories", { params: filters }
+        "/categories", { params }
     );
     return response.data;
 };

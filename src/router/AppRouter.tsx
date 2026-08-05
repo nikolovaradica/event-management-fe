@@ -45,6 +45,7 @@ function AppRouter() {
                     <Route path="/admin/categories/:id/edit" element={<AdminRoute><AdminCategoryFormPage /></AdminRoute>} />
                     <Route path="/admin/organizers" element={<AdminRoute><AdminOrganizersPage /></AdminRoute>} />
                     <Route path="/admin/organizers/new" element={<AdminRoute><AdminOrganizerFormPage /></AdminRoute>} />
+                    <Route path="/admin/organizers/:id/edit" element={<AdminRoute><AdminOrganizerFormPage /></AdminRoute>} />
                 </Route>
 
                 <Route path="*" element={<NotFoundPage />} />

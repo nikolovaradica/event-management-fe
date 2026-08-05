@@ -1,12 +1,29 @@
 import {Link} from "react-router-dom";
+import type {Organizer} from "../../types/Organizer.ts";
+import {deleteOrganizer} from "../../api/organizerService.ts";
 
-type AdminOrganizerRowProps = {
-    id: number;
-    name: string;
-    website: string;
+type AdminOrganizerRowProps = Organizer & {
+    onDelete: () => Promise<void>;
 };
 
-const AdminOrganizerRow = ({id, name, website}: AdminOrganizerRowProps) => {
+const AdminOrganizerRow = ({ id, name, website, onDelete }: AdminOrganizerRowProps) => {
+    const handleDelete = async () => {
+        const confirmed = window.confirm(
+            `Delete "${name}"?`
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            await deleteOrganizer(id);
+            await onDelete();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <tr>
             <td>{name}</td>
@@ -26,7 +43,10 @@ const AdminOrganizerRow = ({id, name, website}: AdminOrganizerRowProps) => {
                 >
                     Edit
                 </Link>
-                <button className="btn btn-danger btn-sm">
+                <button
+                    className="btn btn-danger btn-sm"
+                    onClick={handleDelete}
+                >
                     Delete
                 </button>
             </td>

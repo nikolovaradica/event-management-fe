@@ -1,24 +1,12 @@
 import AdminOrganizerRow from "./AdminOrganizerRow";
+import type {Organizer} from "../../types/Organizer.ts";
 
-const organizers = [
-    {
-        id: 1,
-        name: "FINKI",
-        website: "https://www.finki.ukim.mk"
-    },
-    {
-        id: 2,
-        name: "Microsoft",
-        website: "https://www.microsoft.com"
-    },
-    {
-        id: 3,
-        name: "OWASP",
-        website: "https://owasp.org"
-    }
-];
+type AdminOrganizersTableProps = {
+    organizers: Organizer[];
+    onDelete: () => Promise<void>;
+};
 
-const AdminOrganizersTable = () => {
+const AdminOrganizersTable = ({ organizers, onDelete }: AdminOrganizersTableProps) => {
     return (
         <div className="admin-table-wrapper">
             <table className="admin-table">
@@ -35,6 +23,7 @@ const AdminOrganizersTable = () => {
                     <AdminOrganizerRow
                         key={organizer.id}
                         {...organizer}
+                        onDelete={onDelete}
                     />
                 ))}
                 </tbody>
