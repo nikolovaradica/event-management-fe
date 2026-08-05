@@ -7,15 +7,19 @@ type AdminSearchBarProps = {
     placeholder: string;
     buttonLabel: string;
     buttonTo: string;
+    search: string;
+    onSearchChange: (value: string) => void;
 };
 
-const AdminSearchBar = ({placeholder, buttonLabel, buttonTo}: AdminSearchBarProps) => {
+const AdminSearchBar = ({ placeholder, buttonLabel, buttonTo, search, onSearchChange }: AdminSearchBarProps) => {
     return (
         <section className="admin-search-bar">
             <div className="admin-search-input">
                 <Input
                     type="text"
                     placeholder={placeholder}
+                    value={search}
+                    onChange={(e) => onSearchChange(e.target.value)}
                 />
             </div>
             <Link

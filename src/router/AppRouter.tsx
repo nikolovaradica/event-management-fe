@@ -42,6 +42,7 @@ function AppRouter() {
                     <Route path="/admin/events/edit/:id" element={<AdminRoute><AdminEventFormPage /></AdminRoute>} />
                     <Route path="/admin/categories" element={<AdminRoute><AdminCategoriesPage /></AdminRoute>} />
                     <Route path="/admin/categories/new" element={<AdminRoute><AdminCategoryFormPage /></AdminRoute>} />
+                    <Route path="/admin/categories/:id/edit" element={<AdminRoute><AdminCategoryFormPage /></AdminRoute>} />
                     <Route path="/admin/organizers" element={<AdminRoute><AdminOrganizersPage /></AdminRoute>} />
                     <Route path="/admin/organizers/new" element={<AdminRoute><AdminOrganizerFormPage /></AdminRoute>} />
                 </Route>

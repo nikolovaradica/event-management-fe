@@ -1,6 +1,6 @@
 import AdminEventForm from "../../components/admin/AdminEventForm.tsx";
 
-const EventFormPage = () => {
+const AdminEventFormPage = () => {
     return (
         <main className="admin-page">
             <div className="app-container">
@@ -14,4 +14,4 @@ const EventFormPage = () => {
     );
 };
 
-export default EventFormPage;
+export default AdminEventFormPage;

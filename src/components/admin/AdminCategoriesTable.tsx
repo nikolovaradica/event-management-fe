@@ -1,31 +1,18 @@
 import AdminCategoryRow from "./AdminCategoryRow";
+import type {Category} from "../../types/Category.ts";
 
-const categories = [
-    {
-        id: 1,
-        name: "Artificial Intelligence",
-        eventsCount: 12
-    },
-    {
-        id: 2,
-        name: "Cloud",
-        eventsCount: 5
-    },
-    {
-        id: 3,
-        name: "Cybersecurity",
-        eventsCount: 18
-    }
-];
+type AdminCategoriesTableProps = {
+    categories: Category[];
+    onDelete: () => Promise<void>;
+};
 
-const AdminCategoriesTable = () => {
+const AdminCategoriesTable = ({ categories, onDelete }: AdminCategoriesTableProps) => {
     return (
         <div className="admin-table-wrapper">
             <table className="admin-table">
                 <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Events</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -35,6 +22,7 @@ const AdminCategoriesTable = () => {
                     <AdminCategoryRow
                         key={category.id}
                         {...category}
+                        onDelete={onDelete}
                     />
                 ))}
                 </tbody>
