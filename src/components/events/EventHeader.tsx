@@ -14,12 +14,6 @@ type EventHeaderProps = {
 const EventHeader = ({ event, favorite, onFavoriteToggle, showFavoriteButton }: EventHeaderProps) => {
     return (
         <section className="event-header">
-            <div className="event-header-image">
-                <img
-                    src={event.imageUrl}
-                    alt={event.title}
-                />
-            </div>
             <div className="event-header-content">
                 <span className="event-category">
                     {event.category.name}
@@ -30,7 +24,6 @@ const EventHeader = ({ event, favorite, onFavoriteToggle, showFavoriteButton }: 
                 <p className="event-organizer">
                     Hosted by <strong>{event.organizer.name}</strong>
                 </p>
-                <div className="event-divider" />
                 <div className="event-information">
                     <div className="event-information-item">
                         <FontAwesomeIcon icon={faCalendarDays}/>
@@ -45,13 +38,18 @@ const EventHeader = ({ event, favorite, onFavoriteToggle, showFavoriteButton }: 
                         <span>{event.venue}</span>
                     </div>
                 </div>
-                <div className="event-divider" />
                 {showFavoriteButton && (
                     <FavoriteButton
                         favorite={favorite}
                         onToggle={onFavoriteToggle}
                     />
                 )}
+                <div className="event-header-image">
+                    <img
+                        src={event.imageUrl}
+                        alt={event.title}
+                    />
+                </div>
             </div>
         </section>
     );

@@ -978,48 +978,45 @@
 ========================================== */
 
 .event-header {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: var(--space-8);
-    align-items: center;
-    margin-bottom: var(--space-8);
+    margin-bottom: var(--space-9);
 }
 
-.event-header-image img {
+.event-header-image {
     width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
+    height: clamp(320px, 45vw, 560px);
+    overflow: hidden;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
 }
 
+.event-header-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .event-header-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 var(--space-8) 0 0;
 }
 
 .event-header-content h1 {
     margin: var(--space-3) 0;
-    font-size: clamp(2rem, 4vw, 3rem);
-    line-height: 1.15;
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    line-height: 1.1;
 }
 
 .event-organizer {
     color: var(--color-text-secondary);
-}
-
-.event-divider {
-    width: 100%;
-    height: 1px;
-    margin: var(--space-5) 0;
-    background-color: var(--color-border);
+    margin-bottom: var(--space-6);
 }
 
 .event-information {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    margin: var(--space-6) 0;
 }
 
 .event-information-item {
@@ -1035,12 +1032,11 @@
 }
 
 .event-header .btn {
-    align-self: flex-start;
-    margin-top: var(--space-2);
+    margin: var(--space-2) 0 var(--space-5) 0;
 }
 
 .event-header .event-category {
-    align-self: flex-start;
+    display: inline-block;
     padding: 0.5rem 1rem;
     border-radius: var(--radius-full);
     background-color: rgba(15, 118, 110, 0.1);

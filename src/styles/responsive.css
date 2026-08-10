@@ -60,6 +60,19 @@
     .admin-search-bar .btn {
         width: 100%;
     }
+
+    .event-header-image {
+        height: 280px;
+    }
+
+    .event-header-content {
+        padding-top: var(--space-6);
+    }
+
+    .event-information {
+        flex-direction: column;
+        gap: var(--space-4);
+    }
 }
 
 /* Phones */
