@@ -8,9 +8,12 @@ import type {ReviewRequest} from "../../types/ReviewRequest.ts";
 type ReviewsSectionProps = {
     reviews: Review[];
     onReviewSubmit: (review: ReviewRequest) => Promise<void>;
+    reviewSubmitting: boolean;
+    reviewSubmitError: string | null;
 };
 
-const ReviewsSection = ({ reviews, onReviewSubmit }: ReviewsSectionProps) => {
+const ReviewsSection = ({ reviews, onReviewSubmit, reviewSubmitting,
+                            reviewSubmitError }: ReviewsSectionProps) => {
     return (
         <section className="reviews-section">
             <ReviewSummary reviews={reviews}/>
@@ -26,6 +29,8 @@ const ReviewsSection = ({ reviews, onReviewSubmit }: ReviewsSectionProps) => {
             )}
             <ReviewForm
                 onSubmit={onReviewSubmit}
+                submitting={reviewSubmitting}
+                submitError={reviewSubmitError}
             />
         </section>
     );

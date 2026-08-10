@@ -5,8 +5,9 @@ import {Link} from "react-router-dom";
 import type {EventRequest} from "../../types/EventRequest.ts";
 import type {Category} from "../../types/Category.ts";
 import type {Organizer} from "../../types/Organizer.ts";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import * as React from "react";
+import ErrorMessage from "../common/ErrorMessage.tsx";
 
 type AdminEventFormProps = {
     categories: Category[];
@@ -20,10 +21,12 @@ type AdminEventFormProps = {
     initialCategoryId?: number;
     initialOrganizerId?: number;
     onSubmit: (request: EventRequest) => Promise<void>;
+    submitting: boolean;
+    submitError: string | null;
 };
 
 const AdminEventForm = ({ categories, organizers, initialTitle, initialDescription, initialEventDate, initialCity, initialVenue,
-                        initialImageUrl, initialCategoryId, initialOrganizerId, onSubmit }: AdminEventFormProps) => {
+                        initialImageUrl, initialCategoryId, initialOrganizerId, onSubmit, submitting, submitError}: AdminEventFormProps) => {
     const [title, setTitle] = useState(initialTitle ?? "");
     const [description, setDescription] = useState(initialDescription ?? "");
     const [eventDate, setEventDate] = useState(initialEventDate ?? "");
@@ -32,42 +35,6 @@ const AdminEventForm = ({ categories, organizers, initialTitle, initialDescripti
     const [imageUrl, setImageUrl] = useState(initialImageUrl ?? "");
     const [categoryId, setCategoryId] = useState(initialCategoryId?.toString() ?? "");
     const [organizerId, setOrganizerId] = useState(initialOrganizerId?.toString() ?? "");
-
-    useEffect(() => {
-        setTitle(initialTitle ?? "");
-    }, [initialTitle]);
-
-    useEffect(() => {
-        setDescription(initialDescription ?? "");
-    }, [initialDescription]);
-
-    useEffect(() => {
-        setEventDate(initialEventDate ?? "");
-    }, [initialEventDate]);
-
-    useEffect(() => {
-        setCity(initialCity ?? "");
-    }, [initialCity]);
-
-    useEffect(() => {
-        setVenue(initialVenue ?? "");
-    }, [initialVenue]);
-
-    useEffect(() => {
-        setImageUrl(initialImageUrl?? "");
-    }, [initialImageUrl]);
-
-    useEffect(() => {
-        setCategoryId(
-            initialCategoryId?.toString() ?? ""
-        );
-    }, [initialCategoryId]);
-
-    useEffect(() => {
-        setOrganizerId(
-            initialOrganizerId?.toString() ?? ""
-        );
-    }, [initialOrganizerId]);
 
     const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -189,6 +156,10 @@ const AdminEventForm = ({ categories, organizers, initialTitle, initialDescripti
                 />
             </div>
 
+            {submitError && (
+                <ErrorMessage message={submitError} />
+            )}
+
             <div className="admin-form-actions">
                 <Link
                     to="/admin/events"
@@ -199,8 +170,9 @@ const AdminEventForm = ({ categories, organizers, initialTitle, initialDescripti
                 <button
                     type="submit"
                     className="btn btn-primary"
+                    disabled={submitting}
                 >
-                    Save Event
+                    {submitting ? "Saving..." : "Save Event"}
                 </button>
 
             </div>

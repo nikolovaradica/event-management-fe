@@ -2,17 +2,21 @@ import {Link} from "react-router-dom";
 import Input from "../common/Input";
 import TextArea from "../common/TextArea";
 import type {OrganizerRequest} from "../../types/OrganizerRequest.ts";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import * as React from "react";
+import ErrorMessage from "../common/ErrorMessage.tsx";
 
 type AdminOrganizerFormProps = {
     initialName?: string;
     initialWebsite?: string;
     initialDescription?: string;
     onSubmit: (request: OrganizerRequest) => Promise<void>;
+    submitting: boolean;
+    submitError: string | null;
 };
 
-const AdminOrganizerForm = ({ initialName = "", initialWebsite = "", initialDescription = "", onSubmit }: AdminOrganizerFormProps) => {
+const AdminOrganizerForm = ({ initialName = "", initialWebsite = "", initialDescription = "",
+                                onSubmit, submitting, submitError }: AdminOrganizerFormProps) => {
     const [name, setName] = useState(initialName);
     const [website, setWebsite] = useState(initialWebsite);
     const [description, setDescription] = useState(initialDescription);
@@ -21,18 +25,6 @@ const AdminOrganizerForm = ({ initialName = "", initialWebsite = "", initialDesc
         e.preventDefault();
         await onSubmit({name, website, description});
     };
-
-    useEffect(() => {
-        setName(initialName ?? "");
-    }, [initialName]);
-
-    useEffect(() => {
-        setWebsite(initialWebsite ?? "");
-    }, [initialWebsite]);
-
-    useEffect(() => {
-        setDescription(initialDescription ?? "");
-    }, [initialDescription]);
 
     return (
         <form
@@ -66,6 +58,11 @@ const AdminOrganizerForm = ({ initialName = "", initialWebsite = "", initialDesc
                     placeholder="Describe the organizer..."
                 />
             </div>
+
+            {submitError && (
+                <ErrorMessage message={submitError} />
+            )}
+
             <div className="admin-form-actions">
                 <Link
                     to="/admin/organizers"
@@ -76,8 +73,9 @@ const AdminOrganizerForm = ({ initialName = "", initialWebsite = "", initialDesc
                 <button
                     type="submit"
                     className="btn btn-primary"
+                    disabled={submitting}
                 >
-                    Save Organizer
+                    {submitting ? "Saving..." : "Save Organizer"}
                 </button>
             </div>
         </form>

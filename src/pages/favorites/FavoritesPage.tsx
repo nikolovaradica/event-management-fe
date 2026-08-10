@@ -5,9 +5,14 @@ import {useEffect, useState} from "react";
 import type {Favorite} from "../../types/Favorite.ts";
 import {getFavorites} from "../../api/favoriteService.ts";
 import type {AppEvent} from "../../types/AppEvent.ts";
+import Loading from "../../components/common/Loading.tsx";
+import ErrorMessage from "../../components/common/ErrorMessage.tsx";
 
 const FavoritesPage = () => {
     const [favorites, setFavorites] = useState<Favorite[]>([]);
+
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     const events: AppEvent[] = favorites.map(favorite => ({
         id: favorite.eventId,
@@ -29,11 +34,17 @@ const FavoritesPage = () => {
     }));
 
     const loadFavorites = async () => {
+        setLoading(true);
+        setError(null);
+
         try {
             const response = await getFavorites();
             setFavorites(response);
         } catch (error) {
             console.error(error);
+            setError("Unable to load your favorite events.");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -44,7 +55,11 @@ const FavoritesPage = () => {
     return (
         <main className="favorites-page">
             <div className="app-container">
-                {favorites.length === 0 ? (
+                {loading ? (
+                    <Loading />
+                ) : error ? (
+                    <ErrorMessage message={error} />
+                ) : favorites.length === 0 ? (
                     <NoFavorites />
                 ) : (
                     <>

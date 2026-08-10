@@ -4,6 +4,8 @@ import Pagination from "../../components/common/Pagination";
 import {useEffect, useState} from "react";
 import type {Organizer} from "../../types/Organizer.ts";
 import {getOrganizers} from "../../api/organizerService.ts";
+import Loading from "../../components/common/Loading.tsx";
+import ErrorMessage from "../../components/common/ErrorMessage.tsx";
 
 const AdminOrganizersPage = () => {
     const [organizers, setOrganizers] = useState<Organizer[]>([]);
@@ -12,7 +14,13 @@ const AdminOrganizersPage = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
 
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
     const loadOrganizers = async () => {
+        setLoading(true);
+        setError(null);
+
         try {
             const response = await getOrganizers({
                 page: currentPage,
@@ -22,6 +30,9 @@ const AdminOrganizersPage = () => {
             setTotalPages(response.totalPages);
         } catch (error) {
             console.error(error);
+            setError("Unable to load organizers. Please try again.");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -60,15 +71,24 @@ const AdminOrganizersPage = () => {
                     search={search}
                     onSearchChange={handleSearchChange}
                 />
-                <AdminOrganizersTable
-                    organizers={organizers}
-                    onDelete={loadOrganizers}
-                />
-                <Pagination
-                    currentPage={currentPage + 1}
-                    totalPages={totalPages}
-                    onPageChange={handlePageChange}
-                />
+
+                {loading ? (
+                    <Loading />
+                ) : error ? (
+                    <ErrorMessage message={error} />
+                ) : (
+                    <>
+                        <AdminOrganizersTable
+                            organizers={organizers}
+                            onDelete={loadOrganizers}
+                        />
+                        <Pagination
+                            currentPage={currentPage + 1}
+                            totalPages={totalPages}
+                            onPageChange={handlePageChange}
+                        />
+                    </>
+                )}
             </div>
         </main>
     );

@@ -4,6 +4,8 @@ import AdminEventsTable from "../../components/admin/AdminEventsTable.tsx";
 import {useEffect, useState} from "react";
 import type {AppEvent} from "../../types/AppEvent.ts";
 import {getEvents} from "../../api/eventService.ts";
+import Loading from "../../components/common/Loading.tsx";
+import ErrorMessage from "../../components/common/ErrorMessage.tsx";
 
 const AdminEventsPage = () => {
     const [events, setEvents] = useState<AppEvent[]>([]);
@@ -12,7 +14,13 @@ const AdminEventsPage = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
 
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
     const loadEvents = async () => {
+        setLoading(true);
+        setError(null);
+
         try {
             const response = await getEvents({
                 page: currentPage,
@@ -23,6 +31,9 @@ const AdminEventsPage = () => {
             setTotalPages(response.totalPages);
         } catch (error) {
             console.error(error);
+            setError("Unable to load events. Please try again.");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -61,15 +72,24 @@ const AdminEventsPage = () => {
                     search={search}
                     onSearchChange={handleSearchChange}
                 />
-                <AdminEventsTable
-                    events={events}
-                    onDelete={loadEvents}
-                />
-                <Pagination
-                    currentPage={currentPage + 1}
-                    totalPages={totalPages}
-                    onPageChange={handlePageChange}
-                />
+
+                {loading ? (
+                    <Loading />
+                ) : error ? (
+                    <ErrorMessage message={error} />
+                ) : (
+                    <>
+                        <AdminEventsTable
+                            events={events}
+                            onDelete={loadEvents}
+                        />
+                        <Pagination
+                            currentPage={currentPage + 1}
+                            totalPages={totalPages}
+                            onPageChange={handlePageChange}
+                        />
+                    </>
+                )}
             </div>
         </main>
     );

@@ -1,17 +1,19 @@
-import { useState } from "react";
+import {useState} from "react";
 import StarRating from "./StarRating";
 import TextArea from "../common/TextArea.tsx";
 import * as React from "react";
 import type {ReviewRequest} from "../../types/ReviewRequest.ts";
+import ErrorMessage from "../common/ErrorMessage.tsx";
 
 type ReviewFormProps = {
     onSubmit: (review: ReviewRequest) => Promise<void>;
+    submitting: boolean;
+    submitError: string | null;
 };
 
-const ReviewForm = ({ onSubmit }: ReviewFormProps) => {
+const ReviewForm = ({ onSubmit, submitting, submitError }: ReviewFormProps) => {
     const [rating, setRating] = useState(5);
     const [comment, setComment] = useState("");
-    const [submitting, setSubmitting] = useState(false);
 
     const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -21,12 +23,11 @@ const ReviewForm = ({ onSubmit }: ReviewFormProps) => {
         }
 
         try {
-            setSubmitting(true);
             await onSubmit({ rating, comment });
             setRating(5);
             setComment("");
-        } finally {
-            setSubmitting(false);
+        } catch {
+            // Error is already displayed through submitError.
         }
     };
 
@@ -52,12 +53,15 @@ const ReviewForm = ({ onSubmit }: ReviewFormProps) => {
                     placeholder="Tell others about your experience..."
                 />
             </div>
+            {submitError && (
+                <ErrorMessage message={submitError} />
+            )}
             <button
                 className="btn btn-primary"
                 type="submit"
                 disabled={submitting}
             >
-                Submit Review
+                {submitting ? "Submitting..." : "Submit Review"}
             </button>
         </form>
     );

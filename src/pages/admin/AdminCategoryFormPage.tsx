@@ -4,6 +4,8 @@ import type {CategoryRequest} from "../../types/CategoryRequest.ts";
 import {createCategory, getCategoryById, updateCategory} from "../../api/categoryService.ts";
 import {useEffect, useState} from "react";
 import type {Category} from "../../types/Category.ts";
+import Loading from "../../components/common/Loading.tsx";
+import ErrorMessage from "../../components/common/ErrorMessage.tsx";
 
 const AdminCategoryFormPage = () => {
     const navigate = useNavigate();
@@ -12,16 +14,30 @@ const AdminCategoryFormPage = () => {
 
     const [category, setCategory] = useState<Category | null>(null);
 
+    const [loading, setLoading] = useState(isEdit);
+    const [error, setError] = useState<string | null>(null);
+    const [submitError, setSubmitError] = useState<string | null>(null);
+    const [submitting, setSubmitting] = useState(false);
+
     const loadCategory = async () => {
+        setLoading(true);
+        setError(null);
+
         try {
             const response = await getCategoryById(Number(id));
             setCategory(response);
         } catch (error) {
             console.error(error);
+            setError("Unable to load the category. Please try again.");
+        } finally {
+            setLoading(false);
         }
     };
 
     const handleSubmit = async (request: CategoryRequest) => {
+        setSubmitting(true);
+        setSubmitError(null);
+
         try {
             if (isEdit) {
                 await updateCategory(Number(id), request);
@@ -32,6 +48,13 @@ const AdminCategoryFormPage = () => {
             navigate("/admin/categories");
         } catch (error) {
             console.error(error);
+            setSubmitError(
+                isEdit
+                    ? "Unable to update the category. Please try again."
+                    : "Unable to create the category. Please try again."
+            );
+        } finally {
+            setSubmitting(false);
         }
     };
 
@@ -51,11 +74,22 @@ const AdminCategoryFormPage = () => {
                         : "Create a new event category."}
                     </p>
                 </section>
-                <AdminCategoryForm
-                    initialName={category?.name}
-                    initialDescription={category?.description}
-                    onSubmit={handleSubmit}
-                />
+
+                {loading ? (
+                    <Loading />
+                ) : error ? (
+                    <ErrorMessage message={error} />
+                ) : (
+                    <>
+                        <AdminCategoryForm
+                            initialName={category?.name}
+                            initialDescription={category?.description}
+                            onSubmit={handleSubmit}
+                            submitting={submitting}
+                            submitError={submitError}
+                        />
+                    </>
+                )}
             </div>
         </main>
     );

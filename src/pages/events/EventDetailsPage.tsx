@@ -10,12 +10,21 @@ import {createReview, getReviews} from "../../api/reviewService.ts";
 import type {ReviewRequest} from "../../types/ReviewRequest.ts";
 import {addFavorite, isFavorite, removeFavorite} from "../../api/favoriteService.ts";
 import {useAuth} from "../../context/AuthContext.tsx";
+import Loading from "../../components/common/Loading.tsx";
+import ErrorMessage from "../../components/common/ErrorMessage.tsx";
 
 const EventDetailsPage = () => {
     const { id } = useParams();
     const [event, setEvent] = useState<AppEvent | null>(null);
     const [reviews, setReviews] = useState<Review[]>([]);
     const [favorite, setFavorite] = useState(false);
+
+    const [eventLoading, setEventLoading] = useState(true);
+    const [eventError, setEventError] = useState<string | null>(null);
+    const [reviewsLoading, setReviewsLoading] = useState(true);
+    const [reviewsError, setReviewsError] = useState<string | null>(null);
+    const [reviewSubmitting, setReviewSubmitting] = useState(false);
+    const [reviewSubmitError, setReviewSubmitError] = useState<string | null>(null);
 
     const { isAuthenticated } = useAuth();
 
@@ -24,11 +33,17 @@ const EventDetailsPage = () => {
             return;
         }
 
+        setEventLoading(true);
+        setEventError(null);
+
         try {
             const response = await getEventById(Number(id));
             setEvent(response);
         } catch (error) {
             console.error(error);
+            setEventError("Unable to load this event. Please try again.");
+        } finally {
+            setEventLoading(false);
         }
     };
 
@@ -37,11 +52,17 @@ const EventDetailsPage = () => {
             return;
         }
 
+        setReviewsLoading(true);
+        setReviewsError(null);
+
         try {
             const response = await getReviews(Number(id));
             setReviews(response);
         } catch (error) {
             console.error(error);
+            setReviewsError("Unable to load reviews.");
+        } finally {
+            setReviewsLoading(false);
         }
     };
 
@@ -63,11 +84,18 @@ const EventDetailsPage = () => {
             return;
         }
 
+        setReviewSubmitting(true);
+        setReviewSubmitError(null);
+
         try {
             await createReview(Number(id), review);
             await loadReviews();
         } catch (error) {
             console.error(error);
+            setReviewSubmitError("Unable to submit your review. Please try again.");
+            throw error;
+        } finally {
+            setReviewSubmitting(false);
         }
     };
 
@@ -97,30 +125,45 @@ const EventDetailsPage = () => {
         }
     }, [id]);
 
-    if (!event) {
-        return (
-            <main className="event-details-page">
-                <div className="app-container">
-                    Loading...
-                </div>
-            </main>
-        );
-    }
-
     return (
         <main className="event-details-page">
             <div className="app-container">
-                <EventHeader
-                    event={event}
-                    favorite={favorite}
-                    onFavoriteToggle={handleFavoriteToggle}
-                    showFavoriteButton={isAuthenticated}
-                />
-                <EventDescription description={event.description} />
-                <ReviewsSection
-                    reviews={reviews}
-                    onReviewSubmit={handleReviewSubmit}
-                />
+                {eventLoading ? (
+                    <Loading/>
+                ) : eventError || !event ? (
+                    <ErrorMessage
+                        message={eventError ?? "Event not found."}
+                    />
+                ) : (
+                    <>
+                        <EventHeader
+                            event={event}
+                            favorite={favorite}
+                            onFavoriteToggle={handleFavoriteToggle}
+                            showFavoriteButton={isAuthenticated}
+                        />
+
+                        <EventDescription
+                            description={event.description}
+                        />
+
+                        {reviewsLoading ? (
+                            <Loading/>
+                        ) : reviewsError ? (
+                            <ErrorMessage
+                                message={reviewsError}
+                            />
+                        ) : (
+                            <ReviewsSection
+                                reviews={reviews}
+                                onReviewSubmit={handleReviewSubmit}
+                                reviewSubmitting={reviewSubmitting}
+                                reviewSubmitError={reviewSubmitError}
+                            />
+                        )}
+                    </>
+                )}
+
             </div>
         </main>
     );

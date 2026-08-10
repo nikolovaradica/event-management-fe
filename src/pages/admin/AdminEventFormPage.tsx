@@ -8,6 +8,8 @@ import {getCategories} from "../../api/categoryService.ts";
 import {getOrganizers} from "../../api/organizerService.ts";
 import {createEvent, getEventById, updateEvent} from "../../api/eventService.ts";
 import type {EventRequest} from "../../types/EventRequest.ts";
+import Loading from "../../components/common/Loading.tsx";
+import ErrorMessage from "../../components/common/ErrorMessage.tsx";
 
 const AdminEventFormPage = () => {
     const navigate = useNavigate();
@@ -18,12 +20,18 @@ const AdminEventFormPage = () => {
     const [organizers, setOrganizers] = useState<Organizer[]>([]);
     const [event, setEvent] = useState<AppEvent | null>(null);
 
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [submitting, setSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState<string | null>(null);
+
     const loadCategories = async () => {
         try {
             const response = await getCategories({ page: 0, size: 100 });
             setCategories(response.content);
         } catch (error) {
             console.error(error);
+            setError("Unable to load categories. Please try again.");
         }
     };
 
@@ -33,6 +41,7 @@ const AdminEventFormPage = () => {
             setOrganizers(response.content);
         } catch (error) {
             console.error(error);
+            setError("Unable to load organizers. Please try again.");
         }
     };
 
@@ -42,13 +51,17 @@ const AdminEventFormPage = () => {
             setEvent(response);
         } catch (error) {
             console.error(error);
+            setError("Unable to load the event. Please try again.");
         }
     };
 
     const handleSubmit = async (request: EventRequest) => {
+        setSubmitting(true);
+        setSubmitError(null);
+
         try {
             if (isEdit) {
-                await updateEvent( Number(id), request);
+                await updateEvent(Number(id), request);
             } else {
                 await createEvent(request);
             }
@@ -56,16 +69,32 @@ const AdminEventFormPage = () => {
             navigate("/admin/events");
         } catch (error) {
             console.error(error);
+            setSubmitError(
+                isEdit
+                    ? "Unable to update the event. Please try again."
+                    : "Unable to create the event. Please try again."
+            );
+        } finally {
+            setSubmitting(false);
         }
     };
 
     useEffect(() => {
-        loadCategories();
-        loadOrganizers();
+        const loadData = async () => {
+            setLoading(true);
+            setError(null);
 
-        if (isEdit) {
-            loadEvent();
-        }
+            await loadCategories();
+            await loadOrganizers();
+
+            if (isEdit) {
+                await loadEvent();
+            }
+
+            setLoading(false);
+        };
+
+        loadData();
     }, [id]);
 
     return (
@@ -78,19 +107,28 @@ const AdminEventFormPage = () => {
                         : "Create a new professional event."}
                     </p>
                 </section>
-                <AdminEventForm
-                    categories={categories}
-                    organizers={organizers}
-                    initialTitle={event?.title}
-                    initialDescription={event?.description}
-                    initialEventDate={event?.eventDate}
-                    initialCity={event?.city}
-                    initialVenue={event?.venue}
-                    initialImageUrl={event?.imageUrl}
-                    initialCategoryId={event?.category.id}
-                    initialOrganizerId={event?.organizer.id}
-                    onSubmit={handleSubmit}
-                />
+
+                {loading ? (
+                    <Loading />
+                ) : error ? (
+                    <ErrorMessage message={error} />
+                ) : (
+                    <AdminEventForm
+                        categories={categories}
+                        organizers={organizers}
+                        initialTitle={event?.title}
+                        initialDescription={event?.description}
+                        initialEventDate={event?.eventDate}
+                        initialCity={event?.city}
+                        initialVenue={event?.venue}
+                        initialImageUrl={event?.imageUrl}
+                        initialCategoryId={event?.category.id}
+                        initialOrganizerId={event?.organizer.id}
+                        onSubmit={handleSubmit}
+                        submitting={submitting}
+                        submitError={submitError}
+                    />
+                )}
             </div>
         </main>
     );

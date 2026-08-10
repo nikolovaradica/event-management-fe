@@ -2,7 +2,6 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import HomePage from "../pages/home/HomePage";
 import EventsPage from "../pages/events/EventsPage.tsx";
 import EventDetailsPage from "../pages/events/EventDetailsPage.tsx";
-import CategoriesPage from "../pages/events/CategoriesPage.tsx";
 import LoginPage from "../pages/auth/LoginPage.tsx";
 import RegisterPage from "../pages/auth/RegisterPage.tsx";
 import FavoritesPage from "../pages/favorites/FavoritesPage.tsx";
@@ -27,8 +26,6 @@ function AppRouter() {
                     <Route path="/" element={<HomePage />} />
                     <Route path="/events" element={<EventsPage />} />
                     <Route path="/events/:id" element={<EventDetailsPage />} />
-
-                    <Route path="/categories/:id" element={<CategoriesPage />} />
 
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />

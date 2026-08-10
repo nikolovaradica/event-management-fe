@@ -2,16 +2,20 @@ import {Link} from "react-router-dom";
 import Input from "../common/Input";
 import TextArea from "../common/TextArea";
 import type {CategoryRequest} from "../../types/CategoryRequest.ts";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import * as React from "react";
+import ErrorMessage from "../common/ErrorMessage.tsx";
 
 type AdminCategoryFormProps = {
     initialName?: string;
     initialDescription?: string;
     onSubmit: (request: CategoryRequest) => Promise<void>;
+    submitting: boolean;
+    submitError: string | null;
 };
 
-const AdminCategoryForm = ( {initialName = "", initialDescription = "", onSubmit }: AdminCategoryFormProps) => {
+const AdminCategoryForm = ( {initialName = "", initialDescription = "", onSubmit,
+                                submitting, submitError }: AdminCategoryFormProps) => {
     const [name, setName] = useState(initialName);
     const [description, setDescription] = useState(initialDescription);
 
@@ -19,14 +23,6 @@ const AdminCategoryForm = ( {initialName = "", initialDescription = "", onSubmit
         e.preventDefault();
         await onSubmit({name, description});
     };
-
-    useEffect(() => {
-        setName(initialName ?? "");
-    }, [initialName]);
-
-    useEffect(() => {
-        setDescription(initialDescription ?? "");
-    }, [initialDescription]);
 
     return (
         <form
@@ -51,6 +47,11 @@ const AdminCategoryForm = ( {initialName = "", initialDescription = "", onSubmit
                     placeholder="Describe the category..."
                 />
             </div>
+
+            {submitError && (
+                <ErrorMessage message={submitError} />
+            )}
+
             <div className="admin-form-actions">
                 <Link
                     to="/admin/categories"
@@ -61,8 +62,9 @@ const AdminCategoryForm = ( {initialName = "", initialDescription = "", onSubmit
                 <button
                     type="submit"
                     className="btn btn-primary"
+                    disabled={submitting}
                 >
-                    Save Category
+                    {submitting ? "Saving..." : "Save Category"}
                 </button>
             </div>
         </form>

@@ -4,6 +4,8 @@ import AdminCategoriesTable from "../../components/admin/AdminCategoriesTable.ts
 import {useEffect, useState} from "react";
 import type {Category} from "../../types/Category.ts";
 import {getCategories} from "../../api/categoryService.ts";
+import Loading from "../../components/common/Loading.tsx";
+import ErrorMessage from "../../components/common/ErrorMessage.tsx";
 
 const AdminCategoriesPage = () => {
     const [categories, setCategories] = useState<Category[]>([]);
@@ -12,7 +14,13 @@ const AdminCategoriesPage = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
 
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
     const loadCategories = async () => {
+        setLoading(true);
+        setError(null);
+
         try {
             const response = await getCategories({
                 page: currentPage,
@@ -22,6 +30,9 @@ const AdminCategoriesPage = () => {
             setTotalPages(response.totalPages);
         } catch (error) {
             console.error(error);
+            setError("Unable to load categories. Please try again.");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -60,15 +71,24 @@ const AdminCategoriesPage = () => {
                     search={search}
                     onSearchChange={handleSearchChange}
                 />
-                <AdminCategoriesTable
-                    categories={categories}
-                    onDelete={loadCategories}
-                />
-                <Pagination
-                    currentPage={currentPage + 1}
-                    totalPages={totalPages}
-                    onPageChange={handlePageChange}
-                />
+
+                {loading ? (
+                    <Loading />
+                ) : error ? (
+                    <ErrorMessage message={error} />
+                ) : (
+                    <>
+                        <AdminCategoriesTable
+                            categories={categories}
+                            onDelete={loadCategories}
+                        />
+                        <Pagination
+                            currentPage={currentPage + 1}
+                            totalPages={totalPages}
+                            onPageChange={handlePageChange}
+                        />
+                    </>
+                )}
             </div>
         </main>
     );

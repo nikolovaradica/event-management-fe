@@ -12,6 +12,8 @@ import type {Category} from "../../types/Category.ts";
 import type {DateFilter} from "../../types/DateFilter.ts";
 import {getDateRange} from "../../utils/dateFilterUtils.ts";
 import type {ActiveFilter} from "../../types/ActiveFilter.ts";
+import Loading from "../../components/common/Loading.tsx";
+import ErrorMessage from "../../components/common/ErrorMessage.tsx";
 
 function EventsPage() {
     const [events, setEvents] = useState<AppEvent[]>([]);
@@ -28,6 +30,9 @@ function EventsPage() {
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [totalEvents, setTotalEvents] = useState(0);
+
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const activeFilters: ActiveFilter[] = [];
     if (selectedCategory) {
@@ -70,6 +75,8 @@ function EventsPage() {
 
     const loadEvents = async () => {
         const { from, to } = getDateRange(selectedDateFilter);
+        setLoading(true);
+        setError(null);
 
         try {
             const response = await getEvents({
@@ -86,6 +93,9 @@ function EventsPage() {
             setTotalEvents(response.totalElements);
         } catch (error) {
             console.error(error);
+            setError("Unable to load events. Please try again.");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -188,18 +198,29 @@ function EventsPage() {
                         onRemoveFilter={handleRemoveFilter}
                     />
                 </section>
-                <ResultsHeader
-                    title={`${totalEvents} Events Found`}
-                    subtitle="Showing upcoming events."
-                />
-                <EventsGrid
-                    events={events}
-                />
-                <Pagination
-                    currentPage={currentPage + 1}
-                    totalPages={totalPages}
-                    onPageChange={handlePageChange}
-                />
+
+                {loading ? (
+                    <Loading />
+                ) : error ? (
+                    <ErrorMessage message={error} />
+                ) : (
+                    <>
+                        <ResultsHeader
+                            title={`${totalEvents} Events Found`}
+                            subtitle="Showing upcoming events."
+                        />
+
+                        <EventsGrid
+                            events={events}
+                        />
+
+                        <Pagination
+                            currentPage={currentPage + 1}
+                            totalPages={totalPages}
+                            onPageChange={handlePageChange}
+                        />
+                    </>
+                )}
             </div>
         </main>
     )
