@@ -7,6 +7,7 @@ import {getProfile, getProfileReviews} from "../../api/profileService.ts";
 import type {UserReview} from "../../types/UserReview.ts";
 import Loading from "../../components/common/Loading.tsx";
 import ErrorMessage from "../../components/common/ErrorMessage.tsx";
+import ProfileNotifications from "../../components/profile/ProfileNotifications.tsx";
 
 const ProfilePage = () => {
     const [profile, setProfile] = useState<Profile | null>(null);
@@ -57,6 +58,7 @@ const ProfilePage = () => {
                     <h1>My Profile</h1>
                     <p>Manage your account information and review your activity.</p>
                 </section>
+                <ProfileNotifications />
 
                 {loading ? (
                     <Loading />
